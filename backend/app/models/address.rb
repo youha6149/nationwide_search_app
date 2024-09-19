@@ -1,8 +1,38 @@
-require 'csv'
+require "csv"
 
 class Address < ApplicationRecord
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
+  settings analysis: {
+    tokenizer: {
+      ngram_tokenizer: {
+        type: "ngram",
+        min_gram: 2,
+        max_gram: 2,
+        token_chars: ["letter", "digit"]
+      }
+    },
+    analyzer: {
+      ngram_analyzer: {
+        tokenizer: "ngram_tokenizer",
+        filter: ["lowercase"]
+      }
+    }
+  } do
+    mappings dynamic: false do
+      indexes :combined_field, type: "text", analyzer: "ngram_analyzer"
+    end
+  end
+
+  def as_indexed_json(options = {})
+    {
+      combined_field: "#{prefecture}#{city}#{town}#{kyoto_street}#{chome}#{business_name}#{business_address}"
+    }
+  end
+
   def self.import_from_csv(file_path)
-    CSV.foreach(file_path, encoding: 'Shift_JIS:UTF-8', headers: true) do |row|
+    CSV.foreach(file_path, encoding: "Shift_JIS:UTF-8", headers: true) do |row|
       begin
         Address.create!(
           address_cd: row["住所CD"].to_i,
