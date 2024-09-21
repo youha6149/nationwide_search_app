@@ -40,4 +40,12 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 end
 
+gem 'elasticsearch-model'
 
+gem 'elasticsearch-rails'
+
+gem "elasticsearch"
+
+gem 'dotenv-rails', groups: [:development, :test]
+
+gem 'csv'
