@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe AddressesController, type: :controller do
   let(:valid_params) { { query: '東京都' } }
   let(:invalid_params) { { query: '' } }
+  let(:no_match_params) { { query: '存在しない場所' } }
 
   describe 'GET #search' do
     context 'when search query is not provided' do
@@ -31,7 +32,6 @@ RSpec.describe AddressesController, type: :controller do
         expect(parsed_body).to be_an(Array)
         expect(parsed_body.size).to eq(2)
 
-        # 全てのフィールドをカバーする
         first_record = parsed_body.first
         expect(first_record).to include(
           'address_cd' => 105000000,
@@ -100,6 +100,20 @@ RSpec.describe AddressesController, type: :controller do
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(JSON.parse(response.body)).to eq({ 'error' => '検索に失敗しました: Elasticsearch error' })
+      end
+    end
+
+    context 'when no addresses match the query' do
+      before do
+        allow(Address).to receive(:search).and_return(double('response', records: []))
+      end
+
+      it 'returns an empty array when no addresses match the query' do
+        get :search, params: no_match_params
+
+        expect(response).to have_http_status(:ok)
+        parsed_body = JSON.parse(response.body)
+        expect(parsed_body).to eq([])
       end
     end
   end
