@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe AddressesController, type: :controller do
-  let(:valid_params) { { query: '東京都' } }
-  let(:invalid_params) { { query: '' } }
-  let(:no_match_params) { { query: '存在しない場所' } }
+  let(:valid_params) { { query: '東京都', page: 1 } }
+  let(:invalid_params) { { query: '', page: 1 } }
+  let(:no_match_params) { { query: '存在しない場所', page: 1 } }
 
   describe 'GET #search' do
     context 'when search query is not provided' do
