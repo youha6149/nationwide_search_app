@@ -33,3 +33,5 @@ backend/tmp/storage/*
 backend/config/master.key
 
 .DS_Store
+*.crt
+*.key
