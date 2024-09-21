@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :address do
-    id { 456374 }
     address_cd { 105000000 }
     prefecture_cd { 13 }
     city_cd { 13103 }
