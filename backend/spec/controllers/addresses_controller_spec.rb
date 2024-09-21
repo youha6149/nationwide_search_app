@@ -56,23 +56,21 @@ RSpec.describe AddressesController, type: :controller do
           'business_name_kana' => nil,
           'business_address' => nil,
           'new_address_cd' => nil,
-          'created_at' => "2024-09-15T08:20:55.666Z",
-          'updated_at' => "2024-09-15T08:20:55.666Z"
         )
 
         second_record = parsed_body.second
         expect(second_record).to include(
-          'address_cd' => 123456789,
+          'address_cd' => 577000000,
           'prefecture_cd' => 27,
-          'city_cd' => 27100,
-          'town_cd' => 271000000,
-          'postal_code' => "530-0000",
+          'city_cd' => 27227,
+          'town_cd' => 272270000,
+          'postal_code' => "577-0000",
           'business_flag' => false,
           'abolished_flag' => false,
           'prefecture' => "大阪府",
           'prefecture_kana' => "オオサカフ",
-          'city' => "大阪市",
-          'city_kana' => "オオサカシ",
+          'city' => "東大阪市",
+          'city_kana' => "ヒガシオオサカシ",
           'town' => nil,
           'town_kana' => "　",
           'town_supplement' => "（該当なし）",
@@ -84,8 +82,6 @@ RSpec.describe AddressesController, type: :controller do
           'business_name_kana' => nil,
           'business_address' => nil,
           'new_address_cd' => nil,
-          'created_at' => "2024-09-15T08:20:55.666Z",
-          'updated_at' => "2024-09-15T08:20:55.666Z"
         )
       end
     end
