@@ -3,7 +3,7 @@ require "csv"
 class Address < ApplicationRecord
   include Elasticsearch::Model
 
-  index_name "#{Rails.env}_addresses"
+  index_name "addresses_#{Rails.env}"
 
   settings analysis: {
     tokenizer: {
