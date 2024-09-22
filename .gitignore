@@ -36,3 +36,28 @@ backend/config/master.key
 *.crt
 *.key
 *.csv
+
+node_modules
+frontend/dist
+
+frontend/tests/e2e/videos/
+frontend/tests/e2e/screenshots/
+
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+
+# Editor directories and files
+frontend/.idea
+frontend/*.suo
+frontend/*.ntvs*
+frontend/*.njsproj
+frontend/*.sln
+frontend/*.sw?
