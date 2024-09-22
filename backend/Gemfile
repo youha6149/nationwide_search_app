@@ -62,3 +62,5 @@ gem 'dotenv-rails', groups: [:development, :test]
 
 # CSV parsing
 gem 'csv'
+
+gem 'rack-cors'
