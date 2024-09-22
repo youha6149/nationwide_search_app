@@ -1,0 +1,64 @@
+require 'rails_helper'
+require 'zip'
+require 'webmock/rspec'
+
+RSpec.describe CsvFetcherService, type: :service do
+  let(:url) { 'http://usyo.jp/downloads/new/csv/csv_zenkoku.zip' }
+  let(:storage_path) { Rails.root.join('tmp') }
+  let(:zip_path) { Rails.root.join('tmp', 'csv_zenkoku.zip') }
+  let(:csv_path) { Rails.root.join('tmp', 'csv_zenkoku.csv') }
+
+  subject { described_class.new(url, storage_path) }
+
+  describe '#download_zip' do
+    before do
+      stub_request(:get, url).to_return(body: File.read('spec/fixtures/csv_zenkoku.zip'), status: 200)
+    end
+
+    it 'downloads the zip file' do
+      subject.download_zip
+      expect(File.exist?(zip_path)).to be_truthy
+    end
+
+    it 'raises an OpenURI::HTTPError if the download fails' do
+      stub_request(:get, url).to_return(status: 404)
+      expect { subject.download_zip }.to raise_error(OpenURI::HTTPError)
+    end
+  end
+
+  describe '#extract_csv_from_zip' do
+    before do
+      entry_mock = double('entry', name: 'csv_zenkoku.csv', extract: true)
+      zip_file_mock = double('zip_file')
+
+      allow(Zip::File).to receive(:open).with(zip_path).and_yield(zip_file_mock)
+      allow(zip_file_mock).to receive(:each).and_yield(entry_mock)
+    end
+
+    it 'extracts the CSV from the zip file and returns the path' do
+      extracted_path = subject.extract_csv_from_zip
+      expect(extracted_path).to eq(csv_path)
+    end
+
+    it 'logs an error and raises an exception if extraction fails' do
+      allow(Zip::File).to receive(:open).and_raise(Zip::Error)
+      expect(Rails.logger).to receive(:error).with(/Failed to extract CSV from zip:/)
+      expect { subject.extract_csv_from_zip }.to raise_error(Zip::Error)
+    end
+  end
+
+  describe '#extract_csv' do
+    before do
+      entry_mock = double('entry', name: 'csv_zenkoku.csv', extract: true)
+      zip_file_mock = double('zip_file')
+
+      allow(Zip::File).to receive(:open).with(zip_path).and_yield(zip_file_mock)
+      allow(zip_file_mock).to receive(:each).and_yield(entry_mock)
+    end
+
+    it 'returns the correct extracted CSV path' do
+      extracted_path = subject.send(:extract_csv, zip_path)
+      expect(extracted_path).to eq(csv_path)
+    end
+  end
+end
