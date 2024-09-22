@@ -66,4 +66,25 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
   config.include FactoryBot::Syntax::Methods
+
+  config.before(:each, :elasticsearch) do
+    traits = [
+        :shinagawa,
+        :osaka,
+        :kanagawa_minami_ashigara,
+        :yamaguchi_shimonoseki
+      ]
+
+    traits.each do |trait|
+      create(:address, trait)
+    end
+    Address.__elasticsearch__.create_index!(force: true)
+    Address.__elasticsearch__.refresh_index!
+    Address.import
+    sleep 1
+  end
+
+  config.after(:each, :elasticsearch) do
+    Address.__elasticsearch__.delete_index!
+  end
 end
