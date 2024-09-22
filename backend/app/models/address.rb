@@ -26,6 +26,14 @@ class Address < ApplicationRecord
     end
   end
 
+  # memo: 現時点(2024/09/22)ではmodelにデータが存在する前提
+  def self.ensure_index_exists
+    unless self.__elasticsearch__.index_exists?
+      self.__elasticsearch__.create_index!
+      self.import
+    end
+  end
+
   def as_indexed_json(options = {})
     {
       combined_field: "#{prefecture}#{city}#{town}#{kyoto_street}#{chome}#{business_name}#{business_address}"

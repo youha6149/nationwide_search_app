@@ -6,6 +6,8 @@ class AddressesController < ApplicationController
     end
 
     begin
+      Address.ensure_index_exists
+
       page = params[:page].to_i > 0 ? params[:page].to_i : 1
       per_page = params[:per_page].to_i > 0 ? params[:per_page].to_i : 10
       from_value = (page - 1) * per_page
