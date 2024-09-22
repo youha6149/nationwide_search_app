@@ -33,7 +33,7 @@ class Address < ApplicationRecord
   end
 
   def self.import_from_csv(file_path)
-    CSV.foreach(file_path, encoding: "Shift_JIS:UTF-8", headers: true) do |row|
+    CSV.foreach(file_path, encoding: "CP932:UTF-8", headers: true) do |row|
       begin
         Address.create!(
           address_cd: row["住所CD"].to_i,
