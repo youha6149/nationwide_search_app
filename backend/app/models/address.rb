@@ -32,9 +32,19 @@ class Address < ApplicationRecord
     }
   end
 
+  # memo: 現在はpandasで読み込んだcsvを利用している
   def self.import_from_csv(file_path)
     CSV.foreach(file_path, encoding: "CP932:UTF-8", headers: true) do |row|
       begin
+        # memo: 必須の列が存在しない場合はエラーログを出力して次の行に進む
+        required_columns = ["都道府県", "市区町村", "町域", "京都通り名", "字丁目", "事業所名", "事業所住所", "郵便番号"]
+        missing_columns = required_columns.select { |column| !row.headers.include?(column) }
+
+        if missing_columns.any?
+          puts "Failed to save record due to missing columns: #{missing_columns.join(', ')}"
+          next
+        end
+
         Address.create!(
           address_cd: row["住所CD"].to_i,
           prefecture_cd: row["都道府県CD"].to_i,
@@ -61,10 +71,6 @@ class Address < ApplicationRecord
       rescue => e
         puts "Failed to save record: #{row.inspect}"
         puts "Error: #{e.message}"
-        puts "Failed record details:"
-        row.headers.each do |header|
-          puts "#{ header }: #{row[header].inspect}"
-        end
       end
     end
   end
