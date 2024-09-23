@@ -1,4 +1,3 @@
-# app/services/csv_fetcher_service.rb
 require 'open-uri'
 require 'zip'
 
@@ -23,6 +22,8 @@ class CsvFetcherService
   rescue => e
     Rails.logger.error("Failed to extract CSV from zip: #{e.message}")
     raise
+  ensure
+    File.delete(@zip_path) if File.exist?(@zip_path)
   end
 
   def extract_csv(zip_path)
