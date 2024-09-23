@@ -113,4 +113,73 @@ RSpec.describe AddressesController, type: :controller do
       end
     end
   end
+
+  describe 'POST #create' do
+    let(:csv_fetcher) { instance_double(CsvFetcherService) }
+    let(:csv_file_path) { Rails.root.join('tmp', 'zenkoku.csv') }
+
+    before do
+      allow(CsvFetcherService).to receive(:new).and_return(csv_fetcher)
+    end
+
+    context 'when CSV import is successful' do
+      before do
+        allow(csv_fetcher).to receive(:extract_csv_from_zip).and_return(csv_file_path)
+        allow(Address).to receive(:import_from_csv)
+        allow(Address).to receive(:ensure_index_exists)
+      end
+
+      it 'imports the CSV and ensures index exists' do
+        post :create
+
+        expect(Address).to have_received(:import_from_csv).with(csv_file_path)
+        expect(Address).to have_received(:ensure_index_exists)
+        expect(response).to have_http_status(:ok)
+        expect(JSON.parse(response.body)).to eq({ 'message' => 'CSVの取り込みが完了しました' })
+      end
+
+      it 'deletes the ZIP file after processing' do
+        allow(File).to receive(:delete)
+        allow(File).to receive(:exist?).and_return(true)
+        post :create
+
+        expect(File).to have_received(:delete).with(csv_file_path)
+      end
+    end
+
+    context 'when CSV import fails' do
+      before do
+        allow(csv_fetcher).to receive(:extract_csv_from_zip).and_return(csv_file_path)
+        allow(Address).to receive(:import_from_csv).and_raise(StandardError.new('CSV import error'))
+      end
+
+      it 'returns an error and a failure message' do
+        post :create
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(JSON.parse(response.body)).to eq({ 'error' => 'CSVの取り込みに失敗しました: CSV import error' })
+      end
+
+      it 'still deletes the ZIP file after failure' do
+        allow(File).to receive(:delete)
+        allow(File).to receive(:exist?).and_return(true)
+        post :create
+
+        expect(File).to have_received(:delete).with(csv_file_path)
+      end
+    end
+
+    context 'when ZIP file extraction fails' do
+      before do
+        allow(csv_fetcher).to receive(:extract_csv_from_zip).and_raise(StandardError.new('Zip extraction error'))
+      end
+
+      it 'returns an error and a failure message' do
+        post :create
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(JSON.parse(response.body)).to eq({ 'error' => 'CSVの取り込みに失敗しました: Zip extraction error' })
+      end
+    end
+  end
 end
