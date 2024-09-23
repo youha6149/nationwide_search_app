@@ -1,0 +1,49 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  address_cd: 1
+  prefecture_cd: 1
+  city_cd: 1
+  town_cd: 1
+  postal_code: MyString
+  business_flag: false
+  abolished_flag: false
+  prefecture: MyString
+  prefecture_kana: MyString
+  city: MyString
+  city_kana: MyString
+  town: MyString
+  town_kana: MyString
+  town_supplement: MyString
+  kyoto_street: MyString
+  chome: MyString
+  chome_kana: MyString
+  supplement: MyString
+  business_name: MyString
+  business_name_kana: MyString
+  business_address: MyString
+  new_address_cd: 1
+
+two:
+  address_cd: 1
+  prefecture_cd: 1
+  city_cd: 1
+  town_cd: 1
+  postal_code: MyString
+  business_flag: false
+  abolished_flag: false
+  prefecture: MyString
+  prefecture_kana: MyString
+  city: MyString
+  city_kana: MyString
+  town: MyString
+  town_kana: MyString
+  town_supplement: MyString
+  kyoto_street: MyString
+  chome: MyString
+  chome_kana: MyString
+  supplement: MyString
+  business_name: MyString
+  business_name_kana: MyString
+  business_address: MyString
+  new_address_cd: 1

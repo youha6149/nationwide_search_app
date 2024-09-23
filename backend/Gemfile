@@ -38,6 +38,29 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # FactoryBot for test data generation
+  gem 'factory_bot_rails'
+
+  # Mocking HTTP requests
+  gem 'webmock', require: false
+
+  # Record HTTP interactions for replay during testing
+  gem 'vcr', require: false
+
+  # RSpec for testing
+  gem 'rspec-rails'
 end
 
+# Elasticsearch gems for search functionality
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
+gem "elasticsearch"
 
+# Environment variable management
+gem 'dotenv-rails', groups: [:development, :test]
+
+# CSV parsing
+gem 'csv'
+
+gem 'rack-cors'
