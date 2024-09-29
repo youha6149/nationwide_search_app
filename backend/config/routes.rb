@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   get "addresses/search" => "addresses#search", as: :search
+  post "addresses/create" => "addresses#create", as: :create
 end
