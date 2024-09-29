@@ -31,13 +31,14 @@ class AddressesController < ApplicationController
   def create
     begin
       csv_fetcher = CsvFetcherService.new
+      csv_fetcher.download_zip
       csv_file_path = csv_fetcher.extract_csv_from_zip
 
       Address.transaction do
         Address.import_from_csv(csv_file_path)
-        Address.ensure_index_exists
       end
 
+      Address.ensure_index_exists
       render json: { message: "CSVの取り込みが完了しました" }, status: :ok
     ensure
       File.delete(csv_file_path) if csv_file_path && File.exist?(csv_file_path)
