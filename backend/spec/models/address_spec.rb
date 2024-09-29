@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Address, type: :model do
   let(:csv_cp932_file_path) { Rails.root.join('spec/fixtures/test_addresses_cp932.csv') }
+  let(:csv_cp932_file_path_for_update) { Rails.root.join('spec/fixtures/test_addresses_cp932_for_update.csv') }
   let(:invalid_csv_file_path) { Rails.root.join('spec/fixtures/invalid_test_addresses.csv') }
 
   describe '.import_from_csv' do
@@ -20,6 +21,19 @@ RSpec.describe Address, type: :model do
         expect {
           Address.import_from_csv(invalid_csv_file_path)
         }.to output(/Failed to save record/).to_stdout
+      end
+    end
+
+    context 'when existing records are updated' do
+      it 'updates the existing records' do
+        Address.import_from_csv(csv_cp932_file_path)
+        Address.import_from_csv(csv_cp932_file_path_for_update)
+        updated_address_first = Address.first
+        count = Address.count
+
+        expect(updated_address_first.prefecture).to eq('北海道_updated')
+        expect(count).to eq(4)
+
       end
     end
   end
