@@ -26,6 +26,7 @@ class CsvFetcherService
     File.delete(@zip_path) if File.exist?(@zip_path)
   end
 
+  private
   def extract_csv(zip_path)
     extracted_csv_path = nil
     Zip::File.open(zip_path) do |zip_file|
