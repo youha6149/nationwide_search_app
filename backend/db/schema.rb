@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_14_054306) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_28_032058) do
   create_table "addresses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "address_cd"
     t.integer "prefecture_cd"
@@ -36,5 +36,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_14_054306) do
     t.integer "new_address_cd"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["address_cd"], name: "index_addresses_on_address_cd", unique: true
   end
 end
