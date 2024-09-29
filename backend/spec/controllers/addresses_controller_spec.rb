@@ -124,6 +124,7 @@ RSpec.describe AddressesController, type: :controller do
 
     context 'when CSV import is successful' do
       before do
+        allow(csv_fetcher).to receive(:download_zip).and_return(true)
         allow(csv_fetcher).to receive(:extract_csv_from_zip).and_return(csv_file_path)
         allow(Address).to receive(:import_from_csv)
         allow(Address).to receive(:ensure_index_exists)
@@ -149,6 +150,7 @@ RSpec.describe AddressesController, type: :controller do
 
     context 'when CSV import fails' do
       before do
+        allow(csv_fetcher).to receive(:download_zip).and_return(true)
         allow(csv_fetcher).to receive(:extract_csv_from_zip).and_return(csv_file_path)
         allow(Address).to receive(:import_from_csv).and_raise(StandardError.new('CSV import error'))
       end
@@ -171,6 +173,7 @@ RSpec.describe AddressesController, type: :controller do
 
     context 'when ZIP file extraction fails' do
       before do
+        allow(csv_fetcher).to receive(:download_zip).and_return(true)
         allow(csv_fetcher).to receive(:extract_csv_from_zip).and_raise(StandardError.new('Zip extraction error'))
       end
 
