@@ -1,4 +1,19 @@
 class AddressesController < ApplicationController
+
+  # 検索メソッド
+  #
+  # このメソッドは、住所に基づいてElasticsearchに対する検索クエリを実行します。
+  # `params[:query]` に検索ワードを含む必要があります。結果はJSON形式で返されます。
+  #
+  # @param [String] query 検索クエリ
+  # @param [Integer] page 検索結果のページ番号 (省略可能、デフォルトは1)
+  # @param [Integer] per_page ページごとの結果数 (省略可能、デフォルトは10)
+  # @return [JSON] 検索結果の配列をJSON形式で返します
+  # @raise [ActionController::BadRequest] 検索クエリが空の場合
+  # @raise [StandardError] Elasticsearchの検索が失敗した場合
+  #
+  # @example 検索クエリを指定した場合
+  #   GET /search?query=東京都&page=1&per_page=10
   def search
     if params[:query].blank?
       render json: { error: "検索クエリが指定されていません" }, status: :bad_request
@@ -28,6 +43,16 @@ class AddressesController < ApplicationController
     end
   end
 
+  # CSVインポートメソッド
+  #
+  # このメソッドは、CSVファイルをZIPから抽出し、データベースにインポートします。
+  # データベーストランザクションが使用され、成功時にはElasticsearchのインデックスも更新されます。
+  #
+  # @return [JSON] 成功メッセージをJSON形式で返します
+  # @raise [StandardError] ZIPファイルのダウンロードまたはCSVインポートに失敗した場合
+  #
+  # @example ZIPファイルからのCSVインポート
+  #   POST /create
   def create
     begin
       csv_fetcher = CsvFetcherService.new
