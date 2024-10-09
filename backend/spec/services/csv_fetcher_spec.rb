@@ -1,12 +1,14 @@
 require 'rails_helper'
 require 'zip'
 require 'webmock/rspec'
+require 'kconv'
 
 RSpec.describe CsvFetcherService, type: :service do
   let(:url) { 'http://usyo.jp/downloads/new/csv/csv_zenkoku.zip' }
   let(:storage_path) { Rails.root.join('tmp') }
   let(:zip_path) { Rails.root.join('tmp', 'csv_zenkoku.zip') }
   let(:csv_path) { Rails.root.join('tmp', 'csv_zenkoku.csv') }
+  let(:utf8_csv_path) { Rails.root.join('spec', 'fixtures', 'csv_zenkoku_utf8.csv') }
 
   subject { described_class.new(url, storage_path) }
 
@@ -17,6 +19,7 @@ RSpec.describe CsvFetcherService, type: :service do
 
     it 'downloads the zip file' do
       subject.download_zip
+      # NOTE: `stub_request`はファイルのダウンロード部分をモックしているだけで、ファイルの保存先や保存処理そのものをモックしているわけではないので確認するのはzip_pathで問題ない
       expect(File.exist?(zip_path)).to be_truthy
     end
 
@@ -59,6 +62,24 @@ RSpec.describe CsvFetcherService, type: :service do
     it 'returns the correct extracted CSV path' do
       extracted_path = subject.send(:extract_csv, zip_path)
       expect(extracted_path).to eq(csv_path)
+    end
+  end
+
+  describe '#check_encoding' do
+    context 'when encoding is CP932' do
+      before do
+        allow(File).to receive(:open).with(csv_path, "r:CP932").and_yield(StringIO.new("CP932 encoded text".encode("CP932")))
+      end
+
+      it 'does not raise any error if the CSV is encoded in CP932' do
+        expect { subject.send(:check_encoding, csv_path) }.not_to raise_error
+      end
+    end
+
+    context 'when encoding is not CP932' do
+      it 'raises an error if the CSV is not encoded in CP932' do
+        expect { subject.send(:check_encoding, utf8_csv_path) }.to raise_error(RuntimeError, /Encoding error: Expected CP932 encoding/)
+      end
     end
   end
 end

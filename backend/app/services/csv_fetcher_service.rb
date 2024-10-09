@@ -39,4 +39,16 @@ class CsvFetcherService
     end
     extracted_csv_path
   end
+
+  def check_encoding(file_path)
+    File.open(file_path, "r:CP932") do |file|
+      first_line = file.readline
+      unless first_line.valid_encoding?
+        raise "Encoding error: Expected CP932 encoding"
+      end
+    end
+  rescue Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError => e
+    Rails.logger.error("Encoding check failed: #{e.message}")
+    raise "Encoding error: Expected CP932 encoding"
+  end
 end
