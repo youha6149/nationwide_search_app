@@ -36,6 +36,7 @@ RSpec.describe CsvFetcherService, type: :service do
 
       allow(Zip::File).to receive(:open).with(zip_path).and_yield(zip_file_mock)
       allow(zip_file_mock).to receive(:each).and_yield(entry_mock)
+      allow_any_instance_of(CsvFetcherService).to receive(:check_encoding).and_return(true)
     end
 
     it 'extracts the CSV from the zip file and returns the path' do
