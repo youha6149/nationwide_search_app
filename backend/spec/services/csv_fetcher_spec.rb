@@ -6,9 +6,13 @@ require 'kconv'
 RSpec.describe CsvFetcherService, type: :service do
   let(:url) { 'http://usyo.jp/downloads/new/csv/csv_zenkoku.zip' }
   let(:storage_path) { Rails.root.join('tmp') }
+  # NOTE: 以下二つのパスはテスト実行時に作成され、テスト後に削除される
   let(:zip_path) { Rails.root.join('tmp', 'csv_zenkoku.zip') }
   let(:csv_path) { Rails.root.join('tmp', 'csv_zenkoku.csv') }
-  let(:utf8_csv_path) { Rails.root.join('spec', 'fixtures', 'csv_zenkoku_utf8.csv') }
+
+  let(:utf8_csv_path) { Rails.root.join('spec', 'fixtures', 'zenkoku_utf8_head3.csv') }
+  let(:valid_header_csv_path) { Rails.root.join('spec', 'fixtures', 'zenkoku_cp932_head3.csv') }
+  let(:invalid_header_csv_path) { Rails.root.join('spec', 'fixtures', 'invalid_zenkoku_cp932_head3_drop_prefecture.csv') }
 
   subject { described_class.new(url, storage_path) }
 
@@ -19,7 +23,8 @@ RSpec.describe CsvFetcherService, type: :service do
 
     it 'downloads the zip file' do
       subject.download_zip
-      # NOTE: `stub_request`はファイルのダウンロード部分をモックしているだけで、ファイルの保存先や保存処理そのものをモックしているわけではないので確認するのはzip_pathで問題ない
+      # NOTE: `stub_request`はファイルのダウンロード処理自体をモックしているだけで、
+      # ファイルの保存先や保存処理そのものをモックしているわけではないので確認するのはzip_pathで問題ない
       expect(File.exist?(zip_path)).to be_truthy
     end
 
@@ -81,6 +86,16 @@ RSpec.describe CsvFetcherService, type: :service do
       it 'raises an error if the CSV is not encoded in CP932' do
         expect { subject.send(:check_encoding, utf8_csv_path) }.to raise_error(RuntimeError, /Encoding error: Expected CP932 encoding/)
       end
+    end
+  end
+
+  describe '#check_headers' do
+    it 'does not raise any error if the CSV headers are valid' do
+      expect { subject.send(:check_headers, valid_header_csv_path) }.not_to raise_error
+    end
+
+    it 'raises an error if the CSV headers are invalid or missing' do
+      expect { subject.send(:check_headers, invalid_header_csv_path) }.to raise_error(RuntimeError, /Invalid CSV headers:/)
     end
   end
 end
