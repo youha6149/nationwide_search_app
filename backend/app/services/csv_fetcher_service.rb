@@ -20,6 +20,7 @@ class CsvFetcherService
   def extract_csv_from_zip
     extracted_csv_path = extract_csv(@zip_path)
     check_encoding(extracted_csv_path)
+    check_headers(extracted_csv_path)
     extracted_csv_path
   rescue => e
     Rails.logger.error("Failed to extract CSV from zip: #{e.message}")
