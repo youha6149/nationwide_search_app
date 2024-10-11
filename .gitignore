@@ -32,6 +32,7 @@ backend/tmp/storage/*
 # Ignore master key for decrypting credentials and more.
 backend/config/master.key
 
+backend/vendor/bundle
 .DS_Store
 *.crt
 *.key
