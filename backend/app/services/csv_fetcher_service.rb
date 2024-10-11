@@ -1,3 +1,4 @@
+require 'csv_headers'
 require 'open-uri'
 require 'zip'
 
@@ -51,5 +52,14 @@ class CsvFetcherService
   rescue Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError => e
     Rails.logger.error("Encoding check failed: #{e.message}")
     raise "Encoding error: Expected CP932 encoding"
+  end
+
+  def check_headers(file_path)
+    CSV.open(file_path, 'r:CP932') do |csv|
+      headers = csv.first
+      unless headers.sort == CsvHeaders::VALID_HEADERS.sort
+        raise "Invalid CSV headers: #{headers.join(', ')}"
+      end
+    end
   end
 end
