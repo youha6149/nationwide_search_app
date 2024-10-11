@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Address, type: :model do
-  let(:csv_cp932_file_path) { Rails.root.join('spec/fixtures/test_addresses_cp932.csv') }
-  let(:csv_cp932_file_path_for_update) { Rails.root.join('spec/fixtures/test_addresses_cp932_for_update.csv') }
-  let(:invalid_csv_file_path) { Rails.root.join('spec/fixtures/invalid_test_addresses.csv') }
+  let(:csv_cp932_file_path) { Rails.root.join('spec', 'fixtures', 'zenkoku_cp932_head3.csv') }
+  let(:csv_cp932_file_path_for_update) { Rails.root.join('spec', 'fixtures', 'zenkoku_cp932_head4_change_head1_prefecture.csv') }
+  let(:invalid_csv_file_path) { Rails.root.join('spec', 'fixtures', 'invalid_zenkoku_cp932_head3_drop_prefecture.csv') }
 
   describe '.import_from_csv' do
     context 'when the CSV file is valid' do
