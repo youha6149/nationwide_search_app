@@ -91,14 +91,17 @@ RSpec.configure do |config|
     Address.__elasticsearch__.delete_index!
   end
 
-  config.before(:each, :elasticsearch) do
-    WebMock.allow_net_connect!
-  end
+  # config.before(:each, :elasticsearch) do
+  #   WebMock.allow_net_connect!
+  # end
 
-  config.after(:each, :elasticsearch) do
-    WebMock.disable_net_connect!(allow_localhost: true)
-  end
+  # config.after(:each, :elasticsearch) do
+  #   WebMock.disable_net_connect!(allow_localhost: true)
+  # end
 
-  # デフォルトではWebMockを有効にする
-  WebMock.disable_net_connect!(allow_localhost: true)
+  # elastic search　サーバーへのアクセスと、jusyo.jpへのアクセスを許可
+  WebMock.disable_net_connect!(
+    allow_localhost: true,
+    allow: [%r{elasticsearch}, %r{jusyo\.jp}]
+  )
 end
