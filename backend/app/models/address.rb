@@ -26,7 +26,6 @@ class Address < ApplicationRecord
     end
   end
 
-  # memo: 現時点(2024/09/22)ではmodelにデータが存在する前提
   def self.ensure_index_exists
     unless self.__elasticsearch__.index_exists?
       self.__elasticsearch__.create_index!
@@ -40,8 +39,9 @@ class Address < ApplicationRecord
     }
   end
 
-  # memo: 現在はpandasで読み込んだcsvを利用している
   def self.import_from_csv(file_path)
+    rows = []
+
     CSV.foreach(file_path, encoding: "CP932:UTF-8", headers: true) do |row|
       begin
         # memo: 必須の列が存在しない場合はエラーログを出力して次の行に進む
@@ -53,7 +53,7 @@ class Address < ApplicationRecord
           next
         end
 
-        Address.create!(
+        rows << {
           address_cd: row["住所CD"].to_i,
           prefecture_cd: row["都道府県CD"].to_i,
           city_cd: row["市区町村CD"].to_i,
@@ -75,11 +75,15 @@ class Address < ApplicationRecord
           business_name: row["事業所名"],
           business_name_kana: row["事業所名カナ"],
           business_address: row["事業所住所"],
-        )
+          created_at: Time.now,
+          updated_at: Time.now
+        }
       rescue => e
         puts "Failed to save record: #{row.inspect}"
         puts "Error: #{e.message}"
       end
     end
+
+    Address.upsert_all(rows)
   end
 end

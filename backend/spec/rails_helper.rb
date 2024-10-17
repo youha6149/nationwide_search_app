@@ -32,6 +32,9 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+
+require 'webmock/rspec'
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
@@ -87,4 +90,18 @@ RSpec.configure do |config|
   config.after(:each, :elasticsearch) do
     Address.__elasticsearch__.delete_index!
   end
+
+  # config.before(:each, :elasticsearch) do
+  #   WebMock.allow_net_connect!
+  # end
+
+  # config.after(:each, :elasticsearch) do
+  #   WebMock.disable_net_connect!(allow_localhost: true)
+  # end
+
+  # elastic search　サーバーへのアクセスと、jusyo.jpへのアクセスを許可
+  WebMock.disable_net_connect!(
+    allow_localhost: true,
+    allow: [%r{elasticsearch}, %r{jusyo\.jp}]
+  )
 end
