@@ -40,6 +40,11 @@ class CsvFetcherService
         end
       end
     end
+
+    if extracted_csv_path.nil?
+      raise "CSV file not found in the zip archive"
+    end
+
     extracted_csv_path
   end
 

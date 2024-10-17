@@ -58,17 +58,22 @@ RSpec.describe CsvFetcherService, type: :service do
   end
 
   describe '#extract_csv' do
-    before do
-      entry_mock = double('entry', name: 'csv_zenkoku.csv', extract: true)
-      zip_file_mock = double('zip_file')
+    let(:entry_mock) { double('entry', name: 'csv_zenkoku.csv', extract: true) }
+    let(:zip_file_mock) { double('zip_file') }
 
+    before do
       allow(Zip::File).to receive(:open).with(zip_path).and_yield(zip_file_mock)
-      allow(zip_file_mock).to receive(:each).and_yield(entry_mock)
     end
 
-    it 'returns the correct extracted CSV path' do
+    it 'returns the correct extracted CSV path if CSV is found' do
+      allow(zip_file_mock).to receive(:each).and_yield(entry_mock)
       extracted_path = subject.send(:extract_csv, zip_path)
       expect(extracted_path).to eq(csv_path)
+    end
+
+    it 'raises an error if no CSV file is found in the zip' do
+      allow(zip_file_mock).to receive(:each).and_return(nil)
+      expect { subject.send(:extract_csv, zip_path) }.to raise_error(RuntimeError, /CSV file not found in the zip archive/)
     end
   end
 
