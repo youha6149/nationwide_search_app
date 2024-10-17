@@ -63,7 +63,11 @@ class AddressesController < ApplicationController
         Address.import_from_csv(csv_file_path)
       end
 
-      Address.ensure_index_exists
+      Address.__elasticsearch__.index_exists? && Address.__elasticsearch__.delete_index!
+      Address.__elasticsearch__.create_index!
+      Address.import
+      Address.__elasticsearch__.refresh_index!
+
       render json: { message: "CSVの取り込みが完了しました" }, status: :ok
     ensure
       File.delete(csv_file_path) if csv_file_path && File.exist?(csv_file_path)

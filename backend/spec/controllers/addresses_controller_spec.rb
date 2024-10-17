@@ -127,14 +127,12 @@ RSpec.describe AddressesController, type: :controller do
         allow(csv_fetcher).to receive(:download_zip).and_return(true)
         allow(csv_fetcher).to receive(:extract_csv_from_zip).and_return(csv_file_path)
         allow(Address).to receive(:import_from_csv)
-        allow(Address).to receive(:ensure_index_exists)
       end
 
       it 'imports the CSV and ensures index exists' do
         post :create
 
         expect(Address).to have_received(:import_from_csv).with(csv_file_path)
-        expect(Address).to have_received(:ensure_index_exists)
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)).to eq({ 'message' => 'CSVの取り込みが完了しました' })
       end
