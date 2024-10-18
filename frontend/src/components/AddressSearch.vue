@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div v-if="addresses.length > 0">
+  <div v-if="addresses.length > 0" class="address-list-container">
     <div class="address-list">
       <div v-for="address in addresses" :key="address.id" class="address-card">
         <h3>{{ address.prefecture }} {{ address.city }}</h3>
@@ -149,10 +149,17 @@ export default {
   border-radius: 10px;
 }
 
+.address-list-container {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .address-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
   gap: 20px;
+  margin-top: 20px;
 }
 
 .address-card {
