@@ -96,6 +96,11 @@ export default {
   margin: 0 auto;
 }
 
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
 .pagination {
   display: flex;
   justify-content: space-between;
