@@ -1,7 +1,11 @@
 <template>
-  <nav>
-    <router-link to="/">Address Search</router-link>
-  </nav>
+  <header class="app-header">
+    <div class="logo">MyApp</div>
+    <nav>
+      <router-link to="/">Search</router-link>
+      <a href="#about">About</a>
+    </nav>
+  </header>
   <router-view />
 </template>
 
@@ -14,16 +18,42 @@
   color: #2c3e50;
 }
 
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #007bff;
+  padding: 10px 20px;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
 nav {
-  padding: 30px;
+  display: flex;
+  gap: 20px;
 }
 
 nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: white;
+  text-decoration: none;
 }
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+
+nav a:hover {
+  text-decoration: underline;
 }
 </style>
