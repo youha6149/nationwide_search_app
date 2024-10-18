@@ -1,45 +1,43 @@
 <template>
-  <div class="address-search">
-    <div class="search-bar">
-      <input
-        v-model="searchQuery"
-        type="text"
-        placeholder="地名を入力してください"
-        class="search-input"
-      />
-      <button @click="searchAddresses" class="search-button">検索</button>
-    </div>
-
-    <div v-if="addresses.length > 0">
-      <div class="address-list">
-        <div
-          v-for="address in addresses"
-          :key="address.id"
-          class="address-card"
-        >
-          <h3>{{ address.prefecture }} {{ address.city }}</h3>
-          <p>
-            {{ address.postal_code }} {{ address.town }} {{ address.chome }}
-          </p>
-          <p>{{ address.business_name }} {{ address.business_address }}</p>
-        </div>
-      </div>
-      <div class="pagination">
-        <button @click="changePage(page - 1)" :disabled="page === 1">
-          前へ
-        </button>
-        <span>ページ {{ page }}</span>
-        <button
-          @click="changePage(page + 1)"
-          :disabled="addresses.length < perPage"
-        >
-          次へ
-        </button>
+  <div class="address-search-container">
+    <div class="search-section">
+      <h1>Find the best location for your project</h1>
+      <div class="search-bar">
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="地名を入力してください"
+          class="search-input"
+        />
+        <button @click="searchAddresses" class="search-button">検索</button>
       </div>
     </div>
-
-    <div v-if="error" class="error">{{ error }}</div>
+    <div class="image-section">
+      <img src="your-image-url.jpg" alt="Description" />
+    </div>
   </div>
+
+  <div v-if="addresses.length > 0">
+    <div class="address-list">
+      <div v-for="address in addresses" :key="address.id" class="address-card">
+        <h3>{{ address.prefecture }} {{ address.city }}</h3>
+        <p>{{ address.postal_code }} {{ address.town }} {{ address.chome }}</p>
+        <p>{{ address.business_name }} {{ address.business_address }}</p>
+      </div>
+    </div>
+    <div class="pagination">
+      <button @click="changePage(page - 1)" :disabled="page === 1">前へ</button>
+      <span>ページ {{ page }}</span>
+      <button
+        @click="changePage(page + 1)"
+        :disabled="addresses.length < perPage"
+      >
+        次へ
+      </button>
+    </div>
+  </div>
+
+  <div v-if="error" class="error">{{ error }}</div>
 </template>
 
 <script lang="ts">
@@ -96,16 +94,28 @@ export default {
 </script>
 
 <style scoped>
-.address-search {
-  max-width: 800px;
-  margin: 0 auto;
+.address-search-container {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  background-image: linear-gradient(
+    90deg,
+    rgba(196, 182, 197, 1),
+    rgba(35, 117, 163, 1)
+  );
+  border-top: 1px solid #ddd;
   padding: 20px;
+}
+
+.search-section {
+  flex: 1;
+  margin-right: 50px;
 }
 
 .search-bar {
   display: flex;
-  justify-content: center;
-  margin: 80px 0 20px 0;
+  margin-top: 20px;
 }
 
 .search-input {
@@ -124,6 +134,19 @@ export default {
   color: white;
   cursor: pointer;
   border-radius: 0 5px 5px 0;
+}
+
+.image-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-section img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
 }
 
 .address-list {
