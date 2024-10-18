@@ -22,7 +22,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #007bff;
+  background-image: linear-gradient(
+    90deg,
+    rgba(196, 182, 197, 1),
+    rgba(35, 117, 163, 1)
+  );
   padding: 10px 20px;
   color: white;
   position: fixed;
@@ -50,7 +54,7 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  color: #42b983;
+  color: white;
 }
 
 nav a:hover {
