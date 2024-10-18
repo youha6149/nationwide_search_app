@@ -1,24 +1,29 @@
 <template>
   <div class="address-search">
-    <input
-      v-model="searchQuery"
-      type="text"
-      placeholder="検索値を入力してください"
-    />
-    <button @click="searchAddresses">検索</button>
+    <div class="search-bar">
+      <input
+        v-model="searchQuery"
+        type="text"
+        placeholder="地名を入力してください"
+        class="search-input"
+      />
+      <button @click="searchAddresses" class="search-button">検索</button>
+    </div>
 
     <div v-if="addresses.length > 0">
-      <ul>
-        <li v-for="address in addresses" :key="address.id">
-          {{ address.postal_code }} {{ address.prefecture }} {{ address.city }}
-          {{ address.city_cd }}
-          {{ address.town }}
-          {{ address.kyoto_street }}
-          {{ address.chome }}
-          {{ address.business_name }}
-          {{ address.business_address }}
-        </li>
-      </ul>
+      <div class="address-list">
+        <div
+          v-for="address in addresses"
+          :key="address.id"
+          class="address-card"
+        >
+          <h3>{{ address.prefecture }} {{ address.city }}</h3>
+          <p>
+            {{ address.postal_code }} {{ address.town }} {{ address.chome }}
+          </p>
+          <p>{{ address.business_name }} {{ address.business_address }}</p>
+        </div>
+      </div>
       <div class="pagination">
         <button @click="changePage(page - 1)" :disabled="page === 1">
           前へ
@@ -92,13 +97,46 @@ export default {
 
 <style scoped>
 .address-search {
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
+  padding: 20px;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px 0 0 5px;
+}
+
+.search-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 0 5px 5px 0;
+}
+
+.address-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.address-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
 }
 
 .pagination {
