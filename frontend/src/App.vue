@@ -10,6 +10,10 @@
 </template>
 
 <style>
+body {
+  margin: 0%;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -29,7 +33,7 @@
   );
   padding: 10px 20px;
   color: white;
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   right: 0;
