@@ -40,11 +40,12 @@
 <script lang="ts">
 import { ref } from "vue";
 import axios from "axios";
+import { Address } from "../types";
 
 export default {
   setup() {
     const searchQuery = ref("");
-    const addresses = ref([]);
+    const addresses = ref<Address[]>([]);
     const error = ref("");
     const page = ref(1);
     const perPage = ref(10);
@@ -61,7 +62,7 @@ export default {
             },
           }
         );
-        addresses.value = response.data;
+        addresses.value = response.data as Address[];
         error.value = "";
       } catch (e) {
         error.value = "検索に失敗しました。";
