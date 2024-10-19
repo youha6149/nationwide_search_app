@@ -7,6 +7,9 @@
     </nav>
   </header>
   <router-view />
+  <footer>
+    <div>© 2024 MyApp</div>
+  </footer>
 </template>
 
 <style>
