@@ -64,9 +64,23 @@ export default {
 
     if (process.env.VUE_APP_USE_MOCK === "true") {
       const mock = new MockAdapter(axios);
+
       mock
         .onGet(`${process.env.VUE_APP_API_BASE_URL}/addresses/search`)
-        .reply(200, mockAddresses);
+        .reply((config) => {
+          const params = config.params;
+          const currentPage = parseInt(params.page, 10);
+          const itemsPerPage = parseInt(params.per_page, 10);
+
+          // 開始位置と終了位置を計算
+          const start = (currentPage - 1) * itemsPerPage;
+          const end = start + itemsPerPage;
+
+          // ページネーション対応のデータを返す
+          const paginatedData = mockAddresses.slice(start, end);
+
+          return [200, paginatedData];
+        });
     }
 
     const searchAddresses = async () => {
