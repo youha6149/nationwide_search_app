@@ -44,9 +44,11 @@
 <script lang="ts">
 import AddressSearch from "@/components/AddressSearch.vue";
 import { ref, onMounted, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 import { Address } from "../types";
+import { mockAddresses } from "@/mocks/addressesMock";
 
 export default {
   components: {
@@ -54,17 +56,23 @@ export default {
   },
   setup() {
     const route = useRoute();
-
     const searchQuery = ref(route.query.query || "");
     const addresses = ref<Address[]>([]);
     const error = ref("");
     const page = ref(1);
     const perPage = ref(10);
 
+    if (process.env.VUE_APP_USE_MOCK === "true") {
+      const mock = new MockAdapter(axios);
+      mock
+        .onGet(`${process.env.VUE_APP_API_BASE_URL}/addresses/search`)
+        .reply(200, mockAddresses);
+    }
+
     const searchAddresses = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/addresses/search`,
+          `${process.env.VUE_APP_API_BASE_URL}/addresses/search`,
           {
             params: {
               query: searchQuery.value,
