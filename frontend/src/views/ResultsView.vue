@@ -83,7 +83,11 @@ export default {
         });
     }
 
-    const searchAddresses = async () => {
+    const searchAddresses = async (resetPage = false) => {
+      if (resetPage) {
+        page.value = 1;
+      }
+
       try {
         const response = await axios.get(
           `${process.env.VUE_APP_API_BASE_URL}/addresses/search`,
@@ -115,7 +119,7 @@ export default {
       () => route.query.query,
       (newQuery) => {
         searchQuery.value = newQuery || "";
-        searchAddresses();
+        searchAddresses(true);
       }
     );
 
