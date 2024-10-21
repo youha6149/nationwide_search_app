@@ -1,8 +1,7 @@
 <template>
   <header class="app-header">
-    <div class="logo">MyApp</div>
+    <router-link to="/" class="logo">MyApp</router-link>
     <nav>
-      <router-link to="/">Search</router-link>
       <a href="#about">About</a>
     </nav>
   </header>
