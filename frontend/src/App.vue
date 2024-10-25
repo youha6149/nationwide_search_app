@@ -1,14 +1,36 @@
 <template>
-  <header class="app-header">
-    <router-link to="/" class="logo">MyApp</router-link>
-    <nav>
-      <a href="#about">About</a>
-    </nav>
-  </header>
-  <router-view />
-  <footer>
-    <div>© 2024 MyApp</div>
-  </footer>
+  <div id="app">
+    <header class="app-header">
+      <router-link to="/" class="logo">MyApp</router-link>
+      <nav>
+        <a href="#about">About</a>
+      </nav>
+    </header>
+    <router-view />
+    <footer class="app-footer">
+      <ul class="footer-links">
+        <li>
+          <a href="https://github.com/your-github-profile" target="_blank"
+            >Github</a
+          >
+        </li>
+        <li>
+          <a href="https://qiita.com/your-qiita-profile" target="_blank"
+            >Qiita</a
+          >
+        </li>
+        <li>
+          <a href="https://your-powerpoint-link.com" target="_blank">History</a>
+        </li>
+        <li>
+          <a href="https://github.com/your-repository" target="_blank"
+            >Repository</a
+          >
+        </li>
+      </ul>
+      <div class="copyright">© 2024 MyApp</div>
+    </footer>
+  </div>
 </template>
 
 <style>
@@ -21,7 +43,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .app-header {
@@ -65,5 +89,42 @@ nav a.router-link-exact-active {
 
 nav a:hover {
   text-decoration: underline;
+}
+
+.app-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: linear-gradient(
+    90deg,
+    rgba(196, 182, 197, 1),
+    rgba(35, 117, 163, 1)
+  );
+  padding: 10px 0;
+  margin-top: auto;
+  width: 100%;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+
+.footer-links li a {
+  color: white;
+  text-decoration: none;
+}
+
+.footer-links li a:hover {
+  text-decoration: underline;
+}
+
+.copyright {
+  color: white;
+  text-align: center;
+  font-size: 10px;
 }
 </style>
