@@ -5,9 +5,9 @@
     <div class="features">
       <div class="card">
         <img src="@/assets/icon_cpu.svg" alt="CPU" />
-        <h3>性能</h3>
+        <h3>パフォーマンス</h3>
         <p>
-          Elasticsearchによる超高速な検索機能、Railsの強力なAPI、Vueの軽量で直感的なUI、そしてMySQLの堅牢なデータ処理を組み合わせ、どんなに膨大なデータでも迅速かつ確実に処理。
+          ElasticSearchによる超高速な検索機能、Railsの強力なAPI、Vueの軽量で直感的なUI、そしてMySQLの堅牢なデータ処理を組み合わせ、膨大なデータでも迅速かつ確実に処理。
         </p>
       </div>
 
