@@ -53,12 +53,9 @@ export default defineComponent({
 <style scoped>
 .features {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(250px, 1fr)
-  );
-  gap: 20px;
-  margin-top: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  margin: 30px;
   place-content: center;
   place-items: center;
 }
@@ -67,9 +64,10 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   border-radius: 8px;
-  padding: 20px;
+  padding: 10px;
   max-width: 300px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 100%;
 }
 
 .card img {
