@@ -35,6 +35,17 @@
         </p>
       </div>
     </div>
+    <div class="pdf-viewer">
+      <div class="iframe-container">
+        <iframe
+          src="https://docs.google.com/presentation/d/e/2PACX-1vSaWxsLKSEcHv-eb4UgT_QUDcfvmg5SPD3Pp4uituLe9EYO2WXrg6JIum1HkYonIFV1mgGjKF4TLXVT/embed?start=false&loop=false&delayms=3000"
+          frameborder="0"
+          allowfullscreen="true"
+          mozallowfullscreen="true"
+          webkitallowfullscreen="true"
+        ></iframe>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -85,6 +96,27 @@ export default defineComponent({
   margin-top: 10px;
   font-size: 14px;
   text-align: center;
+}
+
+.pdf-viewer {
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.iframe-container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+}
+
+.iframe-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 @media (max-width: 1200px) {
