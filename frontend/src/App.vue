@@ -11,17 +11,15 @@
     <footer class="app-footer">
       <ul class="footer-links">
         <li>
-          <a href="https://github.com/your-github-profile" target="_blank"
-            >Github</a
-          >
+          <a href="https://github.com/youha6149" target="_blank">Github</a>
         </li>
         <li>
-          <a href="https://qiita.com/your-qiita-profile" target="_blank"
-            >Qiita</a
-          >
+          <a href="https://qiita.com/youha" target="_blank">Qiita</a>
         </li>
         <li>
-          <a href="https://github.com/your-repository" target="_blank"
+          <a
+            href="https://github.com/youha6149/nationwide_search_app"
+            target="_blank"
             >Repository</a
           >
         </li>
