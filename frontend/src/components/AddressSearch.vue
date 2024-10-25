@@ -98,4 +98,25 @@ export default {
   height: auto;
   border-radius: 10px;
 }
+
+@media (max-width: 768px) {
+  .search-view-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-section {
+    margin-right: 0;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .image-section {
+    width: 100%;
+  }
+
+  .image-section img {
+    max-width: 90%;
+  }
+}
 </style>
