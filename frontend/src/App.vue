@@ -3,6 +3,7 @@
     <header class="app-header">
       <router-link to="/" class="logo">MyApp</router-link>
       <nav>
+        <!-- TODO: 他に追加したい要素ができたら消す -->
         <a href="#about">About</a>
       </nav>
     </header>
@@ -18,9 +19,6 @@
           <a href="https://qiita.com/your-qiita-profile" target="_blank"
             >Qiita</a
           >
-        </li>
-        <li>
-          <a href="https://your-powerpoint-link.com" target="_blank">History</a>
         </li>
         <li>
           <a href="https://github.com/your-repository" target="_blank"
