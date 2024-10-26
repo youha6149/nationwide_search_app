@@ -70,4 +70,16 @@
   font-size: 14px;
   text-align: center;
 }
+
+@media (max-width: 1200px) {
+  .features {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .features {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
