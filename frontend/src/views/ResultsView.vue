@@ -4,38 +4,16 @@
     <div class="results-container">
       <h1>検索結果</h1>
 
-      <!-- 検索結果表示 -->
       <div v-if="addresses.length > 0" class="address-list-container">
-        <div class="address-list">
-          <div
-            v-for="address in addresses"
-            :key="address.id"
-            class="address-card"
-          >
-            <h3>{{ address.prefecture }} {{ address.city }}</h3>
-            <p>
-              {{ address.postal_code }} {{ address.town }} {{ address.chome }}
-            </p>
-            <p>{{ address.business_name }} {{ address.business_address }}</p>
-          </div>
-        </div>
-
-        <!-- ページネーション -->
-        <div class="pagination">
-          <button @click="changePage(page - 1)" :disabled="page === 1">
-            前へ
-          </button>
-          <span>ページ {{ page }}</span>
-          <button
-            @click="changePage(page + 1)"
-            :disabled="addresses.length < perPage"
-          >
-            次へ
-          </button>
-        </div>
+        <ResultsList :addresses="addresses" />
+        <ResultsPagination
+          :page="page"
+          :perPage="perPage"
+          :addressesCount="addresses.length"
+          @updatePage="changePage"
+        />
       </div>
 
-      <!-- エラーメッセージ -->
       <div v-if="error" class="error">{{ error }}</div>
     </div>
   </div>
@@ -43,6 +21,8 @@
 
 <script lang="ts">
 import AddressSearch from "@/components/AddressSearch.vue";
+import ResultsList from "@/components/ResultsList.vue";
+import ResultsPagination from "@/components/ResultsPagination.vue";
 import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
@@ -53,6 +33,8 @@ import { mockAddresses } from "@/mocks/addressesMock";
 export default {
   components: {
     AddressSearch,
+    ResultsList,
+    ResultsPagination,
   },
   setup() {
     const route = useRoute();
@@ -72,11 +54,8 @@ export default {
           const currentPage = parseInt(params.page, 10);
           const itemsPerPage = parseInt(params.per_page, 10);
 
-          // 開始位置と終了位置を計算
           const start = (currentPage - 1) * itemsPerPage;
           const end = start + itemsPerPage;
-
-          // ページネーション対応のデータを返す
           const paginatedData = mockAddresses.slice(start, end);
 
           return [200, paginatedData];
@@ -149,26 +128,6 @@ export default {
   width: 80%;
   margin-left: auto;
   margin-right: auto;
-}
-
-.address-list {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.address-card {
-  border: 1px solid #ddd;
-  padding: 15px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.pagination {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
 }
 
 .error {
