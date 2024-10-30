@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="image-section">
-      <img src="your-image-url.jpg" alt="Description" />
+      <img src="@/assets/search_results.png" alt="Description" />
     </div>
   </div>
 </template>
