@@ -1,4 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
+import { describe, it, expect, beforeEach } from "vitest";
 import HomeView from "@/views/HomeView.vue";
 import AddressSearch from "@/components/AddressSearch.vue";
 import AppFeatures from "@/components/AppFeatures.vue";
