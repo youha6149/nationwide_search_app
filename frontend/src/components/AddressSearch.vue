@@ -19,10 +19,11 @@
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
+import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 
-export default {
+export default defineComponent({
+  name: 'AddressSearch',
   setup() {
     const searchQuery = ref("");
     const router = useRouter();
@@ -40,7 +41,7 @@ export default {
       goToResults,
     };
   },
-};
+});
 </script>
 
 <style scoped>
