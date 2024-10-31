@@ -1,11 +1,24 @@
 import { shallowMount, flushPromises } from "@vue/test-utils";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import ResultsView from "@/views/ResultsView.vue";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { mockAddresses } from "@/mocks/addressesMock";
+import type { ComponentPublicInstance } from 'vue';
+import type { Address } from "@/types";
 
-jest.mock("vue-router", () => ({
-    useRoute: jest.fn(() => ({
+interface ResultsViewProps extends ComponentPublicInstance {
+    addresses: Address[];
+    error: string;
+    page: number;
+    perPage: number;
+    searchQuery: string;
+    searchAddresses: (resetPage?: boolean) => Promise<void>;
+    changePage: (newPage: number) => void;
+}
+
+vi.mock("vue-router", () => ({
+    useRoute: vi.fn(() => ({
         query: {
             query: "test"
         }
@@ -22,6 +35,7 @@ describe("ResultsView.vue", () => {
 
     afterEach(() => {
         mock.reset();
+        vi.clearAllMocks();
     });
 
     const mountComponent = () => {
@@ -33,7 +47,7 @@ describe("ResultsView.vue", () => {
                     ResultsPagination: true,
                 },
             },
-        });
+        }) as ReturnType<typeof shallowMount> & { vm: ResultsViewProps };
     };
 
     it("displays search results when addresses are available", async () => {
@@ -51,7 +65,7 @@ describe("ResultsView.vue", () => {
 
     it("updates page correctly when pagination changes", async () => {
         const wrapper = mountComponent();
-        wrapper.vm.changePage(2);
+        await wrapper.vm.changePage(2);
         await flushPromises();
         expect(wrapper.vm.page).toBe(2);
     });

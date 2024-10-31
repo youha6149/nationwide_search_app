@@ -20,17 +20,18 @@
 </template>
 
 <script lang="ts">
+import { defineComponent, ref, onMounted, watch } from "vue";
 import AddressSearch from "@/components/AddressSearch.vue";
 import ResultsList from "@/components/ResultsList.vue";
 import ResultsPagination from "@/components/ResultsPagination.vue";
-import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { Address } from "../types";
+import { Address } from "@/types";
 import { mockAddresses } from "@/mocks/addressesMock";
 
-export default {
+export default defineComponent({
+  name: "ResultsView",
   components: {
     AddressSearch,
     ResultsList,
@@ -38,11 +39,11 @@ export default {
   },
   setup() {
     const route = useRoute();
-    const searchQuery = ref(route.query.query || "");
+    const searchQuery = ref<string>((route.query.query as string) || "");
     const addresses = ref<Address[]>([]);
-    const error = ref("");
-    const page = ref(1);
-    const perPage = ref(10);
+    const error = ref<string>("");
+    const page = ref<number>(1);
+    const perPage = ref<number>(10);
 
     if (process.env.VUE_APP_USE_MOCK === "true") {
       const mock = new MockAdapter(axios);
@@ -76,7 +77,7 @@ export default {
               page: page.value,
               per_page: perPage.value,
             },
-          }
+          },
         );
         addresses.value = response.data as Address[];
         error.value = "";
@@ -87,7 +88,7 @@ export default {
       }
     };
 
-    const changePage = (newPage: number) => {
+    const changePage = (newPage: number): void => {
       if (newPage > 0) {
         page.value = newPage;
         searchAddresses();
@@ -97,9 +98,9 @@ export default {
     watch(
       () => route.query.query,
       (newQuery) => {
-        searchQuery.value = newQuery || "";
+        searchQuery.value = (newQuery as string) || "";
         searchAddresses(true);
-      }
+      },
     );
 
     onMounted(() => {
@@ -116,7 +117,7 @@ export default {
       changePage,
     };
   },
-};
+});
 </script>
 
 <style scoped>
