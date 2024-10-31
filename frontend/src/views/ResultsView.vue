@@ -82,7 +82,6 @@ export default defineComponent({
         addresses.value = response.data as Address[];
         error.value = "";
       } catch (e) {
-        console.error(e);
         error.value = "検索に失敗しました。";
         addresses.value = [];
       }
