@@ -1,107 +1,123 @@
 <template>
-  <div class="address-search">
-    <input
-      v-model="searchQuery"
-      type="text"
-      placeholder="検索値を入力してください"
-    />
-    <button @click="searchAddresses">検索</button>
-
-    <div v-if="addresses.length > 0">
-      <ul>
-        <li v-for="address in addresses" :key="address.id">
-          {{ address.postal_code }} {{ address.prefecture }} {{ address.city }}
-          {{ address.city_cd }}
-          {{ address.town }}
-          {{ address.kyoto_street }}
-          {{ address.chome }}
-          {{ address.business_name }}
-          {{ address.business_address }}
-        </li>
-      </ul>
-      <div class="pagination">
-        <button @click="changePage(page - 1)" :disabled="page === 1">
-          前へ
-        </button>
-        <span>ページ {{ page }}</span>
-        <button
-          @click="changePage(page + 1)"
-          :disabled="addresses.length < perPage"
-        >
-          次へ
-        </button>
+  <div class="search-view-container">
+    <div class="search-section">
+      <h1>Find the best location for your project</h1>
+      <div class="search-bar">
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="地名を入力してください"
+          class="search-input"
+        />
+        <button @click="goToResults" class="search-button">検索</button>
       </div>
     </div>
-
-    <div v-if="error" class="error">{{ error }}</div>
+    <div class="image-section">
+      <img src="@/assets/search_results.png" alt="Description" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
-import axios from "axios";
+import { defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
+export default defineComponent({
+  name: 'AddressSearch',
   setup() {
     const searchQuery = ref("");
-    const addresses = ref([]);
-    const error = ref("");
-    const page = ref(1);
-    const perPage = ref(10);
+    const router = useRouter();
 
-    const searchAddresses = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:3000/addresses/search`,
-          {
-            params: {
-              query: searchQuery.value,
-              page: page.value,
-              per_page: perPage.value,
-            },
-          }
-        );
-        addresses.value = response.data;
-        error.value = "";
-      } catch (e) {
-        error.value = "検索に失敗しました。";
-        addresses.value = [];
-      }
-    };
-
-    const changePage = (newPage: number) => {
-      if (newPage > 0) {
-        page.value = newPage;
-        searchAddresses();
+    const goToResults = () => {
+      if (searchQuery.value.trim()) {
+        router.push({ name: "Results", query: { query: searchQuery.value } });
+      } else {
+        alert("検索クエリを入力してください");
       }
     };
 
     return {
       searchQuery,
-      addresses,
-      error,
-      page,
-      perPage,
-      searchAddresses,
-      changePage,
+      goToResults,
     };
   },
-};
+});
 </script>
 
 <style scoped>
-.address-search {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.pagination {
+.search-view-container {
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  background-image: linear-gradient(
+    90deg,
+    rgba(196, 182, 197, 1),
+    rgba(35, 117, 163, 1)
+  );
+  border-top: 1px solid #ddd;
+  padding: 20px;
 }
 
-.error {
-  color: red;
+.search-section {
+  flex: 1;
+  margin-right: 50px;
+}
+
+.search-bar {
+  display: flex;
+  margin-top: 20px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px 0 0 5px;
+}
+
+.search-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 0 5px 5px 0;
+}
+
+.image-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-section img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .search-view-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-section {
+    margin-right: 0;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .image-section {
+    width: 100%;
+  }
+
+  .image-section img {
+    max-width: 90%;
+  }
 }
 </style>
