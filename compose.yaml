@@ -1,5 +1,25 @@
 version: '3.9'
 services:
+  app:
+    build:
+      context: ./backend
+    container_name: backend_container
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+      RAILS_ENV: development
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      DB_HOST: db
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - elasticsearch
+    volumes:
+      - ./backend:/app
+    networks:
+      - elastic
+
   db:
     image: mysql:8.0
     container_name: mysql_container
