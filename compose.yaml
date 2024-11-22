@@ -32,6 +32,8 @@ services:
       - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
+    networks:
+      - elastic
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.15.1
