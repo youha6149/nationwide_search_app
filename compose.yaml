@@ -41,6 +41,7 @@ services:
     environment:
       - discovery.type=single-node
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=true
       - xpack.security.http.ssl.key=/usr/share/elasticsearch/config/certs/elastic-cert.key
@@ -50,6 +51,12 @@ services:
       - xpack.security.transport.ssl.key=/usr/share/elasticsearch/config/certs/elastic-cert.key
       - xpack.security.transport.ssl.certificate=/usr/share/elasticsearch/config/certs/elastic-cert.crt
       - xpack.security.transport.ssl.certificate_authorities=/usr/share/elasticsearch/config/certs/elastic-cert.crt
+    deploy:
+      resources:
+        limits:
+          memory: 4g
+        reservations:
+          memory: 2g
     volumes:
       - es_data:/usr/share/elasticsearch/data
       - ./backend/config/certs:/usr/share/elasticsearch/config/certs
@@ -57,7 +64,7 @@ services:
       - "9200:9200"
     networks:
       - elastic
-# TODO: volumesも本番環境用を追加する必要があるかもしれない
+
 volumes:
   es_data:
     driver: local
