@@ -8,7 +8,6 @@
 backend/.bundle
 
 # Ignore all environment files (except templates).
-backend/.env*
 !/backend/.env*.erb
 
 # Ignore all logfiles and tempfiles.
@@ -38,6 +37,7 @@ backend/vendor/bundle
 *.key
 *.csv
 *.zip
+.env*
 
 node_modules
 frontend/dist
