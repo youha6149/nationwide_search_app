@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { Address } from "../types";
+import { Address } from "../types/address";
 
 export default defineComponent({
   name: "ResultsList",

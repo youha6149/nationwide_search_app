@@ -27,7 +27,7 @@ import ResultsPagination from "@/components/ResultsPagination.vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { Address } from "@/types";
+import { Address } from "@/types/address";
 import { mockAddresses } from "@/mocks/addressesMock";
 
 export default defineComponent({

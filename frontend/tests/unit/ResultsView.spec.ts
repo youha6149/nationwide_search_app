@@ -5,7 +5,7 @@ import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { mockAddresses } from "@/mocks/addressesMock";
 import type { ComponentPublicInstance } from "vue";
-import type { Address } from "@/types";
+import type { Address } from "@/types/address";
 
 interface ResultsViewProps extends ComponentPublicInstance {
   addresses: Address[];
