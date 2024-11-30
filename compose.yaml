@@ -19,6 +19,20 @@ services:
     networks:
       - elastic
 
+  web:
+    build:
+      context: ./frontend
+    container_name: frontend_container
+    ports:
+      - "8080:8080"
+    environment:
+      VUE_APP_API_BASE_URL: http://localhost:3000
+      VUE_APP_USE_MOCK: "false"
+    volumes:
+      - ./frontend:/app
+    networks:
+      - elastic
+
   db:
     image: mysql:8.0
     container_name: mysql_container

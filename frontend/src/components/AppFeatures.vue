@@ -9,18 +9,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { features } from '@/constants/featuresData'
-import type { FeatureCard } from '@/constants/featuresData'
+import { defineComponent, ref } from "vue";
+import { features } from "@/constants/featuresData";
+import type { FeatureCard } from "@/constants/featuresData";
 
 export default defineComponent({
   setup() {
-    const featuresList = ref<FeatureCard[]>(features)
+    const featuresList = ref<FeatureCard[]>(features);
     return {
-      features: featuresList
-    }
-  }
-})
+      features: featuresList,
+    };
+  },
+});
 </script>
 
 <style scoped>

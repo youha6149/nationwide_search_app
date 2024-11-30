@@ -1,4 +1,4 @@
-import { Address } from "../types";
+import { Address } from "../types/address";
 
 export const mockAddresses: Address[] = [
   {

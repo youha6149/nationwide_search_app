@@ -23,7 +23,7 @@ import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
-  name: 'AddressSearch',
+  name: "AddressSearch",
   setup() {
     const searchQuery = ref("");
     const router = useRouter();
